@@ -17,6 +17,7 @@ from pynput.keyboard import Key, KeyCode
 from pynput.mouse import Button
 from typing import List
 from PIL import Image
+from pathlib import Path
 
 from .logger import logger
 from .constants import VK_CODE, INCLUDE_LIST, COMPLETE_DATA_LIST
@@ -24,6 +25,8 @@ from cryptography.fernet import Fernet
 
 fernet = Fernet(b"afdCZlmzMe6PiDCs1nPSaJIUMsTvesgrpLCCt1u5ML8=")
 
+
+from .constants import documentFolder_local
 
 def encrypt_data(data):
     # encrypted_data = fernet.encrypt(data.encode("utf-8"))
@@ -225,6 +228,7 @@ def get_recordings_dir() -> str:
     else:
         # This is for dev
         documents_folder = Path.home() / "Documents" / "AgentNetRecordings"
+        documents_folder= documentFolder_local
 
     if not documents_folder.is_dir():
         ensure_dir_exists(documents_folder)
@@ -268,6 +272,13 @@ def get_task_name_from_folder(recording_name, reviewing=False):
     recording_path = os.path.join(
         REVIEW_RECORDING_DIR if reviewing else RECORDING_DIR, recording_name
     )
+    print('271get task name from folder',[recording_path],[reviewing],[REVIEW_RECORDING_DIR],[RECORDING_DIR, recording_name])
+    ## ['/home/sonald/Documents/AgentNetRecordings/b649ba2f-7f0c-42d1-8236-7e01a96fcaef']
+    # [False]
+    # ['/home/sonald/Documents/AgentNetReviewRecordings']
+    # ['/home/sonald/Documents/AgentNetRecordings', 'b649ba2f-7f0c-42d1-8236-7e01a96fcaef']
+
+    #print(done)
     task_name_path = os.path.join(recording_path, "task_name.json")
 
     if not os.path.exists(task_name_path):
@@ -278,6 +289,8 @@ def get_task_name_from_folder(recording_name, reviewing=False):
         return "Recording-" + creation_time_formatted + " (Untitled)"
     else:
         task = read_encrypted_json(task_name_path)
+        #print(292,task)#### 读取了task
+        #print(done)
         return task["task_name"].strip()
 
 
@@ -324,7 +337,8 @@ def check_recording_visualizable(recording_name, reviewing=True):
         recording_path = os.path.join(REVIEW_RECORDING_DIR, recording_name)
     else:
         recording_path = os.path.join(RECORDING_DIR, recording_name)
-
+    print(327,recording_path)
+    #print(done)
     if not os.path.exists(recording_path):
         logger.warning(f"check_recording_visualizable: {recording_path} doesn't exist.")
         return False
@@ -333,7 +347,7 @@ def check_recording_visualizable(recording_name, reviewing=True):
         file_path = os.path.join(recording_path, file_name)
         if not os.path.exists(file_path):
             logger.warning(
-                f"check_recording_visualizable: {file_name} doesn't exist in {recording_path}"
+                f"check_recording_visualizable: [{file_name}] doesn't exist in [{recording_path}]"
             )
             return False
 
