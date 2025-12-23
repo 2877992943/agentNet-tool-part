@@ -9,7 +9,7 @@ import uuid
 
 from pynput import keyboard, mouse
 from PyQt6.QtCore import QThread, pyqtSignal
-
+from .constants import outputW,outputH
 from .metadata import MetadataManager
 from .obs_client import OBSClient, is_obs_recording, OBSAlreadyRecordingError
 from .utils import (
@@ -81,7 +81,8 @@ class Recorder(QThread):
         )
         logger.info("Metadata collected.")
         self.obs_client = OBSClient(
-            recording_path=self.recording_path, metadata=self.metadata_manager.metadata
+            recording_path=self.recording_path, metadata=self.metadata_manager.metadata,
+            output_width=outputW,output_height=outputH
         )
 
         if is_obs_recording(self.obs_client):
@@ -317,5 +318,7 @@ class Recorder(QThread):
         self.recording_id = str(uuid.uuid4())
         recording_path = os.path.join(recordings_dir, f"{self.recording_id }")
         os.makedirs(recording_path, exist_ok=True)
+        print(320,recording_path)
+
 
         return recording_path

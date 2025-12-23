@@ -229,7 +229,7 @@ class Action:
 
     def _get_video_name(self, recording_path):
         for file_name in os.listdir(recording_path):
-            if file_name.endswith(".mp4"):
+            if file_name.endswith(".mp4") or file_name.endswith(".mkv") :###??????
                 return file_name
 
     def process_start_end_time(self, start_time, end_time):
@@ -254,13 +254,18 @@ class Action:
             return
 
         video_name = self._get_video_name(recording_path)
+        print(257,recording_path, video_name)
+        #print(done)
         video_path = os.path.join(recording_path, video_name)
 
         max_attempts = 10
         attempt = 0
         cap = None
+        #time.sleep(10)
         while attempt < max_attempts:
-            try:
+            #try:
+
+            if 1:
                 cap = cv2.VideoCapture(video_path)
                 if cap.isOpened() and cap is not None:
                     break
@@ -269,22 +274,31 @@ class Action:
                     f"Attempt {attempt} to open video file failed. Retrying in 1 second..."
                 )
                 time.sleep(1)
-            except Exception as e:
-                logger.exception(
-                    f"Error during attempt {attempt} to open video: {str(e)}")
-                attempt += 1
-                time.sleep(1)
+            # except Exception as e:
+            #     logger.exception(
+            #         f"Error during attempt {attempt} to open video: {str(e)}")
+            #     attempt += 1
+            #     time.sleep(1)
 
         fps = int(cap.get(cv2.CAP_PROP_FPS))
         width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        fourcc = cv2.VideoWriter_fourcc(*"avc1")
+        print('287.....action',width,height)## ok
+        #print(done)
+        ##### 原始的
+        #fourcc = cv2.VideoWriter_fourcc(*"avc1")
+        #fourcc = cv2.VideoWriter_fourcc(*'H264')
+        fourcc = cv2.VideoWriter_fourcc(*'VP90')
 
         os.makedirs(os.path.join(recording_path, "video_clips"), exist_ok=True)
         output_path = os.path.join(
             recording_path, "video_clips", f"{video_clip_name}.mp4"
         )
+        # output_path = os.path.join(
+        #     recording_path, "video_clips", f"{video_clip_name}.mkv"
+        # )
+        print('294,,,,,,',width, height)###3 ok
         out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
         video_attrs.update(
             {
@@ -294,6 +308,10 @@ class Action:
                 "total_frames": total_frames,
             }
         )
+        print('304,,,,',start_time,end_time,video_attrs,window_attrs)##### ok
+        ##### 304,,,, 5.346165860988549 6.0021735390037065
+        # {'video_start_time': 96264.381559864, 'fps': 30, 'width': 1280, 'height': 720, 'total_frames': 192}
+        # {'width': 1920, 'height': 1080}
 
         self.process_video_segment(
             start_time,
@@ -311,6 +329,7 @@ class Action:
         video_attrs["fps"], video_attrs["width"], video_attrs["height"], video_attrs["total_frames"]
         window_attrs["height"], window_attrs["width"]
         """
+        print('319,,,,,,,')
         fps, total_frames = video_attrs["fps"], video_attrs["total_frames"]
         start_frame = max(0, int(start_time * fps))
         end_frame = min(total_frames, int(end_time * fps))

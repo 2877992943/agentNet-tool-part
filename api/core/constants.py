@@ -1,4 +1,5 @@
 from enum import Enum
+from pathlib import Path
 
 SERVER_URL = "https://agentnet.xlang.ai"
 
@@ -35,6 +36,7 @@ RECORDING_STATUS_TO_VIS_STATUS = {
 
 EXCLUDE_LIST = ["recording_status.json", "hub_task_id.txt"]
 INCLUDE_LIST = ["video_clips", "reduced_events_vis.jsonl"]
+#INCLUDE_LIST = [ "reduced_events_vis.jsonl"]###?????
 COMPLETE_DATA_LIST = [
     "events.jsonl",
     "event_buffer.jsonl",
@@ -121,3 +123,14 @@ VK_CODE = {
     110: ".",
     12: "$Unknown$",
 }
+
+
+documentFolder_local='/home/sonald/Desktop/notebook_code/opencua-main/Document-AgentNet1217-smallTaskbarJuzhong-1680x1050-vintage' # no
+#documentFolder_local="/home/sonald/Desktop/notebook_code/opencua-main/Document-AgentNet1217-smallTaskbarJuzhong-1680x1050-bloom"### ok
+#documentFolder_local="/home/sonald/Desktop/notebook_code/opencua-main/Document-AgentNet1217-smallTaskbarJuzhong-1680x1050-organicGlass"###ok
+#documentFolder_local="/home/sonald/Desktop/notebook_code/opencua-main/Document-AgentNet1217-smallTaskbarJuzhong-1920x1080-flow" # DONE
+#documentFolder_local="/home/sonald/Desktop/notebook_code/opencua-main/Document-AgentNet1217-smallTaskbarJuzhong-1920x1080-hazycolor" #done
+#documentFolder_local="/home/sonald/Desktop/notebook_code/opencua-main/Document-AgentNet1217-smallTaskbarJuzhong-1920x1080-square" # done
+documentFolder_local='/home/sonald/Desktop/notebook_code/opencua-main/Document-AgentNet1217-smallTaskbarJuzhong-1920x1080-vintage'
+documentFolder_local=Path(documentFolder_local)
+outputW,outputH=1920,1080
