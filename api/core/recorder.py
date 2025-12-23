@@ -317,5 +317,7 @@ class Recorder(QThread):
         self.recording_id = str(uuid.uuid4())
         recording_path = os.path.join(recordings_dir, f"{self.recording_id }")
         os.makedirs(recording_path, exist_ok=True)
+        print(320,recording_path)
+
 
         return recording_path

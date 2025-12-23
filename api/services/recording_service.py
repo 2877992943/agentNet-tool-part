@@ -52,6 +52,9 @@ class RecordingService:
 
     def start_recording(self, task_hub_data: Dict) -> Tuple[str, str]:
         """Start a new recording session."""
+        print(55,task_hub_data)#{'hub_task_id': None, 'hub_task_name': None, 'hub_task_description': None}
+
+        #print(done)
         logger.info("RecordingService: start_recording")
 
         if self.recorder_thread is not None:
@@ -64,7 +67,7 @@ class RecordingService:
                 generate_window_a11y=self.generate_window_a11y,
                 generate_element_a11y=self.generate_element_a11y,
             )
-            recording_path = self.recorder_thread.recording_path
+            recording_path = self.recorder_thread.recording_path#### uuid path
 
             width, height = pyautogui.size()
             self.reducer = Reducer(
@@ -141,7 +144,7 @@ class RecordingService:
         """Get details of a single recording."""
         logger.info(f"RecordingService: get_single_recording: {recording_name}")
 
-        folder_path = self._get_recording_path(recording_name, reviewing)
+        folder_path = self._get_recording_path(recording_name, reviewing)####
 
         if not os.path.exists(folder_path):
             return FAILED, {"error": "Recording not found"}

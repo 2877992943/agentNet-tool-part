@@ -676,6 +676,8 @@ class Reducer:
         logger.error(f"finish {len(self.reduced_actions)}")
 
     def process_actions_multithreaded(self, recording_path, video_attrs, window_attrs):
+        print(679,recording_path)
+
         def process_action(action, recording_path, video_attrs, window_attrs):
             action.to_video(
                 recording_path=recording_path,
@@ -1029,8 +1031,11 @@ class Reducer:
             events = read_encrypted_jsonl(
                 path=os.path.join(recording_path, "events.jsonl")
             )
-
+            print(1034, recording_path)#/home/sonald/Documents/AgentNetRecordings/c44fa2ff-f2a0-4b7a-acbb-dc9267f02b74
+            #print(done)
             video_path = os.path.join(recording_path, "video_clips")
+            #video_path = recording_path
+
             if os.path.exists(video_path):
                 if os.path.isdir(video_path):
                     shutil.rmtree(video_path)
@@ -1042,7 +1047,7 @@ class Reducer:
             ):
                 os.remove(os.path.join(recording_path, "reduced_events_complete.jsonl"))
 
-            self.compress(events)
+            self.compress(events)###
             self.reduce_all()
             self.transform()
             self.finish()
